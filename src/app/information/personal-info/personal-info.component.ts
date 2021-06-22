@@ -15,16 +15,24 @@ export class PersonalInfoComponent implements OnInit {
   constructor(private informationService: InformationService, private router: Router) { }
 
   ngOnInit(): void {
+    const {
+      firstName = '',
+      lastName = '',
+      jobTitle = '',
+      email = '',
+      mobilePhone = '',
+      officePhone = ''
+    } = this.informationService.getPersonalInformation() || {};
     this.personalInfoForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      jobTitle: new FormControl('', Validators.required),
-      email: new FormControl('', [
+      firstName: new FormControl(firstName || '', Validators.required),
+      lastName: new FormControl(lastName || '', Validators.required),
+      jobTitle: new FormControl(jobTitle || '', Validators.required),
+      email: new FormControl(email || '', [
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ]),
-      mobilePhone: new FormControl('', Validators.required),
-      officePhone: new FormControl('')
+      mobilePhone: new FormControl(mobilePhone, Validators.required),
+      officePhone: new FormControl(officePhone)
     });
   }
 
@@ -35,15 +43,23 @@ export class PersonalInfoComponent implements OnInit {
   get mobilePhone() { return this.personalInfoForm.get('mobilePhone'); }
 
   onSubmit(){
-    this.informationService.setPersonalInformation({
-      firstName: this.personalInfoForm.value.firstName,
-      lastName: this.personalInfoForm.value.lastName,
-      jobTitle: this.personalInfoForm.value.jobTitle,
-      email: this.personalInfoForm.value.email,
-      mobilePhone: this.personalInfoForm.value.mobilePhone,
-      officePhone: this.personalInfoForm.value.officePhone ? this.personalInfoForm.value.officePhone : null
-    });
-    this.router.navigateByUrl('/information/company-info');
+    if(this.personalInfoForm.invalid) {
+      Object.keys(this.personalInfoForm.controls).forEach(field => {
+        const control = this.personalInfoForm.get(field);
+        control.markAsTouched({ onlySelf: true });
+      });
+      return;
+    } else {
+      this.informationService.setPersonalInformation({
+        firstName: this.personalInfoForm.value.firstName,
+        lastName: this.personalInfoForm.value.lastName,
+        jobTitle: this.personalInfoForm.value.jobTitle,
+        email: this.personalInfoForm.value.email,
+        mobilePhone: this.personalInfoForm.value.mobilePhone,
+        officePhone: this.personalInfoForm.value.officePhone ? this.personalInfoForm.value.officePhone : null
+      });
+      this.router.navigateByUrl('/information/company-info');
+    }
   }
 
 }

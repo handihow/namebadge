@@ -3,8 +3,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import PersonalInformation from '../models/personalInfo.model';
 import CompanyInformation from '../models/companyInfo.model';
-
+import CompletedParts from '../models/completed.model';
 import firebase from 'firebase/app';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,11 @@ export class InformationService {
 
   setPersonalInformation(personalInfo: PersonalInformation){
     this._personalInformation = personalInfo;
+    this.setCompletedState({
+      personalInformation: true,
+      companyInformation: false,
+      uploadedFiles: false
+    })
   }
 
   getCompanyInformation() {
@@ -30,13 +36,32 @@ export class InformationService {
 
   setCompanyInformation(companyInfo: CompanyInformation) {
     this._companyInformation = companyInfo;
+    this.setCompletedState({
+      personalInformation: true,
+      companyInformation: true,
+      uploadedFiles: false
+    })
+  }
+
+  private _createDefaultCompletedState = () => {
+    const defaultState: CompletedParts =
+    {
+      personalInformation: false,
+      companyInformation: false,
+      uploadedFiles: false
+    }
+    return defaultState;
+  }
+
+  private _completedState: BehaviorSubject<CompletedParts> = new BehaviorSubject(this._createDefaultCompletedState());
+  public readonly completedState: Observable<CompletedParts> = this._completedState.asObservable();
+
+  public setCompletedState = (completedState: CompletedParts) => {
+    this._completedState.next(completedState);
   }
 
   submitInformation(){
-    console.log(this._personalInformation);
-    console.log(this._companyInformation);
     if(!this._personalInformation || !this._companyInformation) return;
-    console.log('submitting to fb')
     this.db.collection('information').add({
       personalInfo: this._personalInformation,
       companyInfo: this._companyInformation,

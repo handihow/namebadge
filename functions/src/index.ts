@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 import * as admin from "firebase-admin";
 admin.initializeApp();
 import * as functions from "firebase-functions";
@@ -18,7 +19,7 @@ export const sendEmail = functions.firestore
         companyInfo: {companyName = ""} = {},
       } = data;
       const msg = {
-        to: "kadib64674@beydent.com",
+        to: "jose.1032@live.com",
         from: "Team NameBadge<office@handihow.com>",
         templateId: templateId,
         dynamic_template_data: {

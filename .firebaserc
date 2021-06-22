@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "namebadge-7e1ac": {
+      "hosting": {
+        "name-badge": [
+          "namebadge-7e1ac"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "namebadge-7e1ac"
+  }
+}

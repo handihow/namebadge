@@ -1,0 +1,23 @@
+<div class="card" style="width: 24rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{companyInformation?.companyName}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{personalInformation?.firstName}} {{personalInformation?.lastName}}</h6>
+    <p class="card-text">{{companyInformation?.street}}</p>
+    <p class="card-text">{{companyInformation?.zip}} {{companyInformation?.city}}</p>
+  </div>
+</div>
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+  <a
+    class="btn btn-secondary"
+    routerLink="/information/add-files"
+  >
+    Back
+  </a>
+  <button
+    class="btn btn-primary"
+    (click)="onSubmit()"
+  >
+    Submit
+  </button>
+</div>

@@ -1,0 +1,99 @@
+<form [formGroup]="companyInfoForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label for="companyName" class="form-label"
+          >Company name (required)</label
+        >
+        <div class="input-group has-validation">
+          <input
+            id="companyName"
+            [ngClass]="[
+              'form-control',
+              (companyName.dirty || companyName.touched) && companyName.invalid
+                ? 'is-invalid'
+                : '',
+              companyName.valid ? 'is-valid' : ''
+            ]"
+            type="text"
+            formControlName="companyName"
+          />
+          <div
+            *ngIf="
+              companyName.invalid && (companyName.dirty || companyName.touched)
+            "
+            class="invalid-feedback"
+          >
+            Company name is required.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label for="department" class="form-label">Department</label>
+        <input
+          id="department"
+          class="form-control"
+          type="text"
+          formControlName="department"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="street" class="form-label">Street</label>
+    <input
+      id="street"
+      class="form-control"
+      type="text"
+      formControlName="street"
+    />
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <div class="mb-3">
+        <label for="zip" class="form-label">Zip Code</label>
+        <input
+          id="zip"
+          class="form-control"
+          type="text"
+          formControlName="zip"
+        />
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label for="city" class="form-label">City</label>
+        <input
+          id="city"
+          class="form-control"
+          type="text"
+          formControlName="city"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="website" class="form-label">Website</label>
+    <input
+      id="website"
+      class="form-control"
+      type="text"
+      formControlName="website"
+    />
+  </div>
+
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-secondary" routerLink="/information/personal-info">
+      Back
+    </a>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!companyInfoForm.valid"
+    >
+      Next
+    </button>
+  </div>
+</form>

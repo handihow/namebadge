@@ -1,0 +1,162 @@
+<div class="contact-form-container">
+  <form [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label for="firstName" class="form-label"
+            >First name (required)</label
+          >
+          <div class="input-group has-validation">
+            <input
+              type="text"
+              [ngClass]="[
+                'form-control',
+                firstName.invalid && (firstName.dirty || firstName.touched)
+                  ? 'is-invalid'
+                  : '',
+                firstName.valid ? 'is-valid' : ''
+              ]"
+              formControlName="firstName"
+              required
+            />
+            <div
+              *ngIf="
+                firstName.invalid && (firstName.dirty || firstName.touched)
+              "
+              class="invalid-feedback"
+            >
+              First name is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last name (required)</label>
+          <div class="input-group has-validation">
+            <input
+              type="text"
+              [ngClass]="[
+                'form-control',
+                lastName.invalid && (lastName.dirty || lastName.touched)
+                  ? 'is-invalid'
+                  : '',
+                lastName.valid ? 'is-valid' : ''
+              ]"
+              formControlName="lastName"
+              required
+            />
+            <div
+              *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+              class="invalid-feedback"
+            >
+              Last name is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label for="jobTitle" class="form-label">Job title (required)</label>
+          <div class="input-group has-validation">
+            <input
+              type="text"
+              [ngClass]="[
+                'form-control',
+                jobTitle.invalid && (jobTitle.dirty || jobTitle.touched)
+                  ? 'is-invalid'
+                  : '',
+                jobTitle.valid ? 'is-valid' : ''
+              ]"
+              formControlName="jobTitle"
+              required
+            />
+            <div
+              *ngIf="jobTitle.invalid && (jobTitle.dirty || jobTitle.touched)"
+              class="invalid-feedback"
+            >
+              Job title is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address (required)</label>
+          <div class="input-group has-validation">
+            <input
+              type="email"
+              [ngClass]="[
+                'form-control',
+                (email.dirty || email.touched) && email.invalid
+                  ? 'is-invalid'
+                  : '',
+                email.valid ? 'is-valid' : ''
+              ]"
+              formControlName="email"
+            />
+            <div
+              *ngIf="email.invalid && (email.dirty || email.touched)"
+              class="invalid-feedback"
+            >
+              Enter valid email address.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label for="mobilePhone" class="form-label"
+            >Mobile phone (required)</label
+          >
+          <div class="input-group has-validation">
+            <input
+              type="text"
+              [ngClass]="[
+                'form-control',
+                (mobilePhone.dirty || mobilePhone.touched) &&
+                mobilePhone.invalid
+                  ? 'is-invalid'
+                  : '',
+                mobilePhone.valid ? 'is-valid' : ''
+              ]"
+              formControlName="mobilePhone"
+            />
+            <div
+              *ngIf="
+                mobilePhone.invalid &&
+                (mobilePhone.dirty || mobilePhone.touched)
+              "
+              class="invalid-feedback"
+            >
+              Mobile phone is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label for="officePhone" class="form-label">Office phone</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="officePhone"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!personalInfoForm.valid"
+      >
+        Next
+      </button>
+    </div>
+  </form>
+</div>

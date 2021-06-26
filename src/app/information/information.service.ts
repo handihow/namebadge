@@ -3,9 +3,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import PersonalInformation from '../models/personalInfo.model';
 import CompanyInformation from '../models/companyInfo.model';
-import CompletedParts from '../models/completed.model';
+import UCFile from '../models/file.model';
 import firebase from 'firebase/app';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,30 @@ export class InformationService {
 
   private _personalInformation: PersonalInformation;
   private _companyInformation: CompanyInformation;
+  private _filesInformation: UCFile[] = [];
 
   constructor(private db: AngularFirestore) { }
+
+  private _completedPersonalInformation: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public readonly completedPersonalInformation: Observable<boolean> = this._completedPersonalInformation.asObservable();
+
+  public setCompletedPersonalInformation = (completed: boolean) => {
+    this._completedPersonalInformation.next(completed);
+  }
+
+  private _completedCompanyInformation: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public readonly completedCompanyInformation: Observable<boolean> = this._completedCompanyInformation.asObservable();
+
+  public setCompletedCompanyInformation = (completed: boolean) => {
+    this._completedCompanyInformation.next(completed);
+  }
+
+  private _addedFilesInformation: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public readonly addedFilesInformation: Observable<boolean> = this._addedFilesInformation.asObservable();
+
+  public setAddedFilesInformation = (completed: boolean) => {
+    this._addedFilesInformation.next(completed);
+  }
 
   getPersonalInformation() {
     return this._personalInformation;
@@ -23,11 +45,7 @@ export class InformationService {
 
   setPersonalInformation(personalInfo: PersonalInformation){
     this._personalInformation = personalInfo;
-    this.setCompletedState({
-      personalInformation: true,
-      companyInformation: false,
-      uploadedFiles: false
-    })
+    this.setCompletedPersonalInformation(true);
   }
 
   getCompanyInformation() {
@@ -36,40 +54,37 @@ export class InformationService {
 
   setCompanyInformation(companyInfo: CompanyInformation) {
     this._companyInformation = companyInfo;
-    this.setCompletedState({
-      personalInformation: true,
-      companyInformation: true,
-      uploadedFiles: false
-    })
+    this.setCompletedCompanyInformation(true);
   }
 
-  private _createDefaultCompletedState = () => {
-    const defaultState: CompletedParts =
-    {
-      personalInformation: false,
-      companyInformation: false,
-      uploadedFiles: false
+  getFileInformation(){
+    return this._filesInformation;
+  }
+
+  addFileInformation(fileInfo: UCFile){
+    this._filesInformation.push(fileInfo);
+    this.setAddedFilesInformation(true);
+  }
+
+  async submitInformation(){
+    if(!this._personalInformation || !this._companyInformation) return null;
+    try {
+      const doc = await this.db.collection('information').add({
+        personalInfo: this._personalInformation,
+        companyInfo: this._companyInformation,
+        files: this._filesInformation,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return doc.id;
+    } catch (err) {
+      console.error(err);
+      return null;
     }
-    return defaultState;
   }
 
-  private _completedState: BehaviorSubject<CompletedParts> = new BehaviorSubject(this._createDefaultCompletedState());
-  public readonly completedState: Observable<CompletedParts> = this._completedState.asObservable();
-
-  public setCompletedState = (completedState: CompletedParts) => {
-    this._completedState.next(completedState);
-  }
-
-  submitInformation(){
-    if(!this._personalInformation || !this._companyInformation) return;
-    this.db.collection('information').add({
-      personalInfo: this._personalInformation,
-      companyInfo: this._companyInformation,
-      files: [],
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    })
-    .then(value => console.log(value))
-    .catch(err => console.log(err));
+  checkEmailStatus(docId){
+    console.log(docId);
+    return this.db.collection('information').doc(docId).valueChanges();
   }
 
 }

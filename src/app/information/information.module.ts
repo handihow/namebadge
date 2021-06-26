@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { UcWidgetModule } from 'ngx-uploadcare-widget';
+
 import { InformationRoutingModule } from './information-routing.module';
 import { InformationComponent } from './information.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
@@ -21,7 +23,8 @@ import { ReviewSubmitComponent } from './review-submit/review-submit.component';
   imports: [
     CommonModule,
     InformationRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UcWidgetModule
   ]
 })
 export class InformationModule { }

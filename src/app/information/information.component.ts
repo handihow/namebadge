@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {  Subscription } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { InformationService } from './information.service';
 
 @Component({
@@ -7,25 +7,18 @@ import { InformationService } from './information.service';
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.scss']
 })
-export class InformationComponent implements OnInit, OnDestroy {
+export class InformationComponent implements OnInit {
 
-  completedState: Subscription;
-  personalInformation = false;
-  companyInformation = false;
-  uploadedFiles = false;
+  personalInformation$: Observable<boolean>;
+  companyInformation$: Observable<boolean>;
+  addedFiles: Observable<boolean>;
 
   constructor(private informationService: InformationService) { }
 
   ngOnInit(): void {
-    this.completedState = this.informationService.completedState.subscribe((value) => {
-      this.personalInformation = value.personalInformation;
-      this.companyInformation = value.companyInformation;
-      this.uploadedFiles = value.uploadedFiles
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.completedState.unsubscribe();
+    this.personalInformation$ = this.informationService.completedPersonalInformation;
+    this.companyInformation$ = this.informationService.completedCompanyInformation;
+    this.addedFiles = this.informationService.addedFilesInformation;
   }
 
 }

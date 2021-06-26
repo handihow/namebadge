@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import * as admin from "firebase-admin";
 admin.initializeApp();
+const db = admin.firestore();
 import * as functions from "firebase-functions";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sgMail = require("@sendgrid/mail");
 const apiKey = functions.config().sendgrid.key;
@@ -14,9 +14,11 @@ export const sendEmail = functions.firestore
     .document("information/{docId}")
     .onCreate((snapshot) => {
       const data = snapshot.data();
+      const id = snapshot.id;
       const {
         personalInfo: {firstName = "", lastName = ""} = {},
         companyInfo: {companyName = ""} = {},
+        files = [],
       } = data;
       const msg = {
         to: "jose.1032@live.com",
@@ -26,19 +28,25 @@ export const sendEmail = functions.firestore
           firstName,
           lastName,
           companyName,
+          files,
         },
       };
       return sgMail
           .send(msg)
           .then(() => {
-            return {
+            db.collection("information").doc(id).update({
               success: true,
-            };
+              message: msg,
+            });
+            return;
           })
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .catch((error:any) => {
-            return {
+            db.collection("information").doc(id).update({
               success: false,
-              message: error.message,
-            };
+              message: msg,
+              error: error.message ? error.message : JSON.stringify(error),
+            });
+            return;
           });
     });

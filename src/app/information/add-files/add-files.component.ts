@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import UCFile from '../../models/file.model';
+import { InformationService } from '../information.service';
 
 @Component({
   selector: 'app-add-files',
@@ -7,13 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddFilesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private informationService: InformationService) { }
 
   ngOnInit(): void {
   }
 
-  onUploadComplete(event){
-    console.log(event);
+  onChange(file){
+    if(!file) {
+      return;
+    }
+    const files = file.files();
+    files.forEach((promise) => {
+      promise.done((fileInfo: UCFile) => {
+        if(fileInfo.sourceInfo) delete fileInfo.sourceInfo;
+        if(fileInfo.isStored){
+          this.informationService.addFileInformation(fileInfo);
+        }
+      });
+    })
   }
 
 }

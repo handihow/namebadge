@@ -1,12 +1,9 @@
 <p>You can upload multiple files here.</p>
-<input
-  type="hidden"
-  role="uploadcare-uploader"
-  data-public-key="4c5b0d7d89c677590925"
-  name="my_file"
-  data-multiple="true"
-  (on-upload-complete)="onUploadComplete($event)"
-/>
+<ngx-uploadcare-widget
+  multiple="true"
+  public-key="4c5b0d7d89c677590925"
+  (on-change)="onChange($event)">
+</ngx-uploadcare-widget>
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
   <a class="btn btn-secondary" routerLink="/information/company-info"> Back </a>

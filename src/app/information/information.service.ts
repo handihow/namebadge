@@ -66,6 +66,11 @@ export class InformationService {
     this.setAddedFilesInformation(true);
   }
 
+  clearFileInformation(){
+    this._filesInformation = [];
+    this.setAddedFilesInformation(false);
+  }
+
   async submitInformation(){
     if(!this._personalInformation || !this._companyInformation) return null;
     try {
@@ -80,11 +85,6 @@ export class InformationService {
       console.error(err);
       return null;
     }
-  }
-
-  checkEmailStatus(docId){
-    console.log(docId);
-    return this.db.collection('information').doc(docId).valueChanges();
   }
 
 }

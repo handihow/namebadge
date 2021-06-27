@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./information/information.module').then(m => m.InformationModule)
   },
   {
+    path: 'finished',
+    loadChildren: () => import('./finished/finished.module').then(m => m.FinishedModule)
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'information'

@@ -13,6 +13,6 @@
     <a [ngClass]="['nav-link', (personalInformation$ | async) && (companyInformation$ | async)  ? '' : 'disabled']" routerLinkActive="active"  routerLink="/information/review-submit">Review and submit</a>
   </li>
 </ul>
-<div class="information-container">
+<div class="standard-container">
   <router-outlet></router-outlet>
 </div>

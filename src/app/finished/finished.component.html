@@ -1,0 +1,36 @@
+<div class="standard-container">
+  <ng-container *ngIf="(informationStatus$ | async)?.sgResponse; else waiting">
+    <ng-container *ngIf="(informationStatus$ | async)?.success; else notSent">
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Well done!</h4>
+        <p>Aww yeah, you successfully read this important alert message.</p>
+        <hr />
+        <p class="mb-0">
+          Sent to: {{ (informationStatus$ | async)?.message?.to }}
+        </p>
+        <hr />
+        <button class="btn btn-success" (click)="onReset()">Send another form</button>
+      </div>
+    </ng-container>
+    <ng-template #notSent>
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">No luck!</h4>
+        <p>Sorry, that didn't go too well.</p>
+        <hr />
+        <p class="mb-0">Error: {{ (informationStatus$ | async)?.error }}</p>
+        <hr />
+        <button class="btn btn-danger">Try again</button>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #waiting>
+    <div class="d-flex align-items-center">
+      <strong>Waiting for confirmation email was sent...</strong>
+      <div
+        class="spinner-border ms-auto"
+        role="status"
+        aria-hidden="true"
+      ></div>
+    </div>
+  </ng-template>
+</div>

@@ -1,35 +1,35 @@
-<ng-container *ngIf="inProgress; else inProgress">
-  <ng-container *ngIf="!(informationStatus$ | async); else emailSent">
-    <div class="card" style="width: 24rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{companyInformation?.companyName}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{personalInformation?.firstName}} {{personalInformation?.lastName}}</h6>
-        <p class="card-text">{{companyInformation?.street}}</p>
-        <p class="card-text">{{companyInformation?.zip}} {{companyInformation?.city}}</p>
-      </div>
+<ng-container *ngIf="inReview; else submitted">
+  <div class="card" style="width: 24rem">
+    <div class="card-body">
+      <h5 class="card-title">{{ companyInformation?.companyName }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">
+        {{ personalInformation?.firstName }} {{ personalInformation?.lastName }}
+      </h6>
+      <p class="card-text">{{ companyInformation?.street }}</p>
+      <p class="card-text">
+        {{ companyInformation?.zip }} {{ companyInformation?.city }}
+      </p>
     </div>
-
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <a
-        class="btn btn-secondary"
-        routerLink="/information/add-files"
-      >
-        Back
-      </a>
-      <button
-        class="btn btn-primary"
-        (click)="onSubmit()"
-      >
-        Submit
-      </button>
+  </div>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-secondary" routerLink="/information/add-files"> Back </a>
+    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+  </div>
+</ng-container>
+<ng-template #submitted>
+  <ng-container *ngIf="hasErrors; else waiting">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">No luck!</h4>
+      <p>Sorry, that didn't go too well.</p>
+      <hr>
+      <p class="mb-0">We couldn't save the information...</p>
+      <p><button class="btn btn-primary" (click)="toggleInReview()">Try again</button></p>
     </div>
   </ng-container>
-  <ng-template #emailSent>
-    Success: {{(informationStatus$ | async)?.success}}
-    Sent to: {{(informationStatus$ | async)?.message?.to}}
+  <ng-template #waiting>
+    <div class="d-flex align-items-center">
+      <strong>Please wait while we submit your information...</strong>
+      <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+    </div>
   </ng-template>
-</ng-container>
-<ng-template #inProgress>
-  Please wait...
 </ng-template>
-

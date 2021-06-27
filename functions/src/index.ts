@@ -36,6 +36,7 @@ export const sendEmail = functions.firestore
           .then(() => {
             db.collection("information").doc(id).update({
               success: true,
+              sgResponse: true,
               message: msg,
             });
             return;
@@ -44,6 +45,7 @@ export const sendEmail = functions.firestore
           .catch((error:any) => {
             db.collection("information").doc(id).update({
               success: false,
+              sgResponse: true,
               message: msg,
               error: error.message ? error.message : JSON.stringify(error),
             });

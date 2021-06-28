@@ -31,24 +31,29 @@ export const sendEmail = functions.firestore
           files,
         },
       };
-      return sgMail
-          .send(msg)
-          .then(() => {
-            db.collection("information").doc(id).update({
-              success: true,
-              sgResponse: true,
-              message: msg,
-            });
-            return;
-          })
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .catch((error:any) => {
-            db.collection("information").doc(id).update({
-              success: false,
-              sgResponse: true,
-              message: msg,
-              error: error.message ? error.message : JSON.stringify(error),
-            });
-            return;
-          });
+      return (
+        sgMail
+            .send(msg)
+            .then(() => {
+              db.collection("information").doc(id).update({
+                success: true,
+                sgResponse: true,
+                message: msg,
+              });
+              return;
+            })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .catch((error: any) => {
+              db.collection("information")
+                  .doc(id)
+                  .update({
+                    success: false,
+                    sgResponse: true,
+                    message: msg,
+                    error:
+                      error.message ? error.message : JSON.stringify(error),
+                  });
+              return;
+            })
+      );
     });

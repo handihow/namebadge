@@ -8,6 +8,8 @@
         <div class="input-group has-validation">
           <input
             id="companyName"
+            #companytext
+            list="datalistOptions"
             [ngClass]="[
               'form-control',
               (companyName.dirty || companyName.touched) && companyName.invalid
@@ -18,6 +20,12 @@
             type="text"
             formControlName="companyName"
           />
+          <datalist id="datalistOptions">
+            <option
+              *ngFor="let item of autocompleteItems"
+              [value]="item?.description"
+            ></option>
+          </datalist>
           <div
             *ngIf="
               companyName.invalid && (companyName.dirty || companyName.touched)
@@ -85,14 +93,10 @@
   </div>
 
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button class="btn btn-outline-danger" (click)="onClear()">Clear</button>
     <a class="btn btn-secondary" routerLink="/information/personal-info">
       Back
     </a>
-    <button
-      type="submit"
-      class="btn btn-primary"
-    >
-      Next
-    </button>
+    <button type="submit" class="btn btn-primary">Next</button>
   </div>
 </form>

@@ -138,7 +138,7 @@ export class CompanyInfoComponent implements OnInit {
     this.GoogleAutocomplete.getPlacePredictions(
       {
         input,
-        componentRestrictions: { country: ['NL', 'SE'] },
+        componentRestrictions: { country: ['SE'] },
         types: ['establishment'], //  / 'address' / 'geocode'
       },
       (predictions, status) => {

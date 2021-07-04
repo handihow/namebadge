@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../login/login.service';
+import firebase from 'firebase/app';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  userData$: Observable<firebase.User>;
+
+  constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
+    this.userData$ = this.loginService.userData;
+  }
+
+  async signOut() {
+    await this.loginService.logout();
+    this.router.navigateByUrl('/login');
   }
 
 }

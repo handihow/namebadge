@@ -1,0 +1,41 @@
+<div class="login-form-container">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="hasFailedLogin">
+        {{errorMessage}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="closeAlert()"></button>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <div class="input-group has-validation">
+                <input type="email" [ngClass]="[
+                    'form-control',
+                    (email.dirty || email.touched) && email.invalid
+                    ? 'is-invalid'
+                    : '',
+                    email.valid ? 'is-valid' : ''
+                ]" formControlName="email" />
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                    Enter valid email address.
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Password</label>
+            <div class="input-group has-validation">
+                <input type="password" [ngClass]="[
+                    'form-control',
+                    (password.dirty || password.touched) && password.invalid
+                    ? 'is-invalid'
+                    : '',
+                    password.valid ? 'is-valid' : ''
+                ]" formControlName="password" />
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
+                    Enter password (minimum 8 characters).
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            Login
+        </button>
+    </form>
+</div>

@@ -1,0 +1,33 @@
+<div class="container">
+    <div  class="mt-4 mb-4">
+        <a routerLink="/list">Back to list</a>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4>Personal info</h4>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item" *ngFor="let item of personalItems">
+                    <h6>{{item.label}}</h6>
+                    {{item.value}}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>Company info</h4>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item" *ngFor="let item of companyItems">
+                    <h6>{{item.label}}</h6>
+                    {{item.value}}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>Files</h4>
+            <div class="list-group list-group-flush">
+                <a [href]="file.cdnUrl" target=_blank class="list-group-item list-group-item-action" *ngFor="let file of files">
+                    {{file.name}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
